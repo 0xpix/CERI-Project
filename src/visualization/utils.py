@@ -1,10 +1,24 @@
-# Helper Function for data processing
+# ================================
+# Importing Libraries
+# ================================
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
+# ==============================
+# Data Preprocessing Functions
+# ==============================
 def plot_disaster_frequency(data, disaster_filter):
+    # Extract year from date if there is no column Year
+    if 'Year' not in data.columns:
+        # Check for both cases: YYYY/MM and YYYY/MM/DD
+        if data['Date'].str.contains('/').any():
+            data['Year'] = pd.to_datetime(data['Date'], format='%Y/%m').dt.year
+        else:
+            data['Year'] = pd.to_datetime(data['Date'], format='%Y').dt.year
+
     # Group by Year and Disaster Type and count frequency
     disaster_counts = data.groupby(['Year', 'Disaster type']).size().reset_index(name='Frequency')
 
