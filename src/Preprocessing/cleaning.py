@@ -36,6 +36,8 @@ def select_and_rename_columns(data, selected_columns, new_column_names=None):
     return data_with_selected_columns
 
 
+import pandas as pd
+
 def filter_african_disasters(data, years_range=None, capitalize=False):
     """
     Filters a DataFrame for African countries and specific years, adjusts disaster type casing,
@@ -48,15 +50,21 @@ def filter_african_disasters(data, years_range=None, capitalize=False):
 
     Returns:
         pd.DataFrame: A DataFrame filtered by African countries and specified years,
-                      with the 'Disaster type' column formatted as specified.
+                      with the 'Disaster type' column formatted to start with a capital letter if specified.
 
     Raises:
-        ValueError: If 'data' is not a DataFrame.
+        ValueError: If 'data' is not a DataFrame, 'years_range' is not a list or range of integers, or contains non-integer elements.
     """
     if not isinstance(data, pd.DataFrame):
         raise ValueError("The 'data' argument must be a pandas DataFrame.")
     
-    # List of African countries for filtering
+    if years_range is not None:
+        if not isinstance(years_range, (list, range)):
+            raise ValueError("The 'years_range' argument must be a list or range.")
+        if not all(isinstance(year, int) for year in years_range):
+            raise ValueError("All elements in 'years_range' must be integers.")
+
+    # List of African countries
     africa = (
         "Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi",
         "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Comoros",
@@ -70,14 +78,14 @@ def filter_african_disasters(data, years_range=None, capitalize=False):
     )
 
     # Filter the data for African countries
-    african_data = data[data['Country'].isin(africa)].reset_index(drop=True)
+    african_data = data[data['Country'].isin(africa)]
 
     # Filter data by specified years if provided
     if years_range:
-        african_data = african_data[african_data['Year'].isin(years_range)].reset_index(drop=True)
+        african_data = african_data[african_data['Year'].isin(years_range)]
 
-    # Apply casing to the disaster type column based on the input flags
+    # Capitalize the first letter of each disaster type if specified
     if capitalize:
         african_data['Disaster type'] = african_data['Disaster type'].str.capitalize()
 
-    return african_data
+    return african_data.reset_index(drop=True)
