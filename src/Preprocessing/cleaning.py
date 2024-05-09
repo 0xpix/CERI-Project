@@ -36,7 +36,7 @@ def select_and_rename_columns(data, selected_columns, new_column_names=None):
     return data_with_selected_columns
 
 
-def filter_african_disasters(data, years_range, capitalize=False):
+def filter_african_disasters(data, years_range=None, capitalize=False):
     """
     Filters a DataFrame for African countries and specific years, adjusts disaster type casing,
     and ensures robust error handling.
@@ -74,8 +74,9 @@ def filter_african_disasters(data, years_range, capitalize=False):
     # Filter the data for African countries
     african_data = data[data['Country'].isin(africa)].reset_index(drop=True)
 
-    # Filter the data for specified years 
-    african_data = african_data[african_data['Year'].isin(years_range)].reset_index(drop=True)
+    if years_range:
+        # Filter the data for specified years 
+        african_data = african_data[african_data['Year'].isin(years_range)].reset_index(drop=True)
 
     if capitalize == True:
         # Capitalize the first letter of each disaster type using the .str.capitalize() method
