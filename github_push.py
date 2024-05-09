@@ -28,5 +28,3 @@ def git_operations(commit_message):
     except subprocess.CalledProcessError as e:
         return f"An error occurred: {e}"
 
-# Example usage:
-print(git_operations('Fix the cleaning function'))
