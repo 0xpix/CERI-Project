@@ -51,14 +51,11 @@ def filter_african_disasters(data, years_range=None, capitalize=False):
                       with the 'Disaster type' column formatted as specified.
 
     Raises:
-        ValueError: If 'data' is not a DataFrame or 'years_range' is not a list or range of integers.
+        ValueError: If 'data' is not a DataFrame.
     """
     if not isinstance(data, pd.DataFrame):
         raise ValueError("The 'data' argument must be a pandas DataFrame.")
     
-    if years_range is not None and not all(isinstance(year, int) for year in years_range):
-        raise ValueError("The 'years_range' argument must be a list or range of integers.")
-
     # List of African countries for filtering
     africa = (
         "Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi",
