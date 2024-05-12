@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import ee
 
+ee.Authenticate()
+
 # =====================
 # Functions for Geemap
 # =====================
