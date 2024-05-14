@@ -1,4 +1,5 @@
 import pandas as pd
+
 # ==================
 # Cleaning the data
 # ==================
@@ -10,7 +11,8 @@ def select_and_rename_columns(data, selected_columns, new_column_names=None):
     Args:
         data (pd.DataFrame): The original DataFrame.
         selected_columns (list): A list of column names to select. These must exist in the DataFrame.
-        new_column_names (list, optional): A list of new names for the selected columns. Must have the same length as selected_columns if provided.
+        new_column_names (list, optional): A list of new names for the selected columns. Must have the 
+        same length as selected_columns if provided.
     
     Returns:
         pd.DataFrame: A DataFrame containing only the selected columns, possibly renamed.
@@ -36,8 +38,6 @@ def select_and_rename_columns(data, selected_columns, new_column_names=None):
     return data_with_selected_columns
 
 
-import pandas as pd
-
 def filter_african_disasters(data, years_range=[], capitalize=False):
     """
     Filters a DataFrame for African countries and specific years, adjusts disaster type casing,
@@ -53,7 +53,8 @@ def filter_african_disasters(data, years_range=[], capitalize=False):
                       with the 'Disaster type' column formatted to start with a capital letter if specified.
 
     Raises:
-        ValueError: If 'data' is not a DataFrame, 'years_range' is not a list or range of integers, or contains non-integer elements.
+        ValueError: If 'data' is not a DataFrame, 'years_range' is not a list or range of integers, 
+        or contains non-integer elements.
     """
     if not isinstance(data, pd.DataFrame):
         raise ValueError("The 'data' argument must be a pandas DataFrame.")
@@ -89,3 +90,15 @@ def filter_african_disasters(data, years_range=[], capitalize=False):
         african_data['Disaster type'] = african_data['Disaster type'].str.capitalize()
 
     return african_data.reset_index(drop=True)
+
+
+def correct_date_format(date_str):
+    '''
+    ensure the date is in yyyy-mm-dd format with leading zeros 
+    '''
+    parts = date_str.split('-')
+    if len(parts) == 2:  # yyyy-mm format
+        return f'{parts[0]}-{int(parts[1]):02d}-01'
+    elif len(parts) == 3:  # yyyy-m-d format
+        return f'{parts[0]}-{int(parts[1]):02d}-{int(parts[2]):02d}'
+    return date_str
