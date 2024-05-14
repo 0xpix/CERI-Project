@@ -24,7 +24,9 @@ def git_operations(commit_message):
         # Push the changes to the main branch
         result = subprocess.run(["git", "push", "origin", "main"], check=True, text=True, capture_output=True)
         
+        # Print a success message if the push is successful
+        print("Push operation succeeded.")
+        
         return result.stdout
     except subprocess.CalledProcessError as e:
         return f"An error occurred: {e}"
-
