@@ -79,7 +79,7 @@ def compare_disaster_frequency(data1, data2, disaster_filter):
 
 # Function to set color for each feature based on disaster type
 def set_color(feature):
-    key = feature.get(feature_column)
+    key = feature.get('Disaster type')
     color = color_palette.get(key, "black")  # default to black if type not found
     return feature.set('color', color)
         
