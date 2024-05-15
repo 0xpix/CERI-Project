@@ -47,7 +47,7 @@ def feature2ee(file):
             df = pd.read_csv(file)
             features = [
                 ee.Feature(ee.Geometry.Point([row['Longitude'], row['Latitude']]), 
-                           {'disaster_type': row['Disaster type'], 'date': row['Date'], 'country': row['Country'], 'deaths': row['Total deaths']})
+                           {'disaster_type': row['Disaster type'], 'date': row['Date'], 'country': row['Country'], 'deaths': row['Total deaths'], 'location': row['Location']})
                 for idx, row in df.iterrows()
             ]
 
