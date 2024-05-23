@@ -35,7 +35,7 @@ def main(start_year, end_year, subdataset):
             print(f"Warning: No file found for year {year}")
             continue
         
-        output_file = os.path.join(output_dir, f"LULC_{year}.tiff")
+        output_file = os.path.join(output_dir, f"LULC_{year}_{subdataset}.tiff")
 
         # GDAL translate command with CRS definition
         cmd_translate = [
