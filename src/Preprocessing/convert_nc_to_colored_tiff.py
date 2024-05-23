@@ -11,7 +11,7 @@ def find_input_file(input_dir, year):
     for pattern in patterns:
         input_file = os.path.join(input_dir, pattern)
         if os.path.exists(input_file):
-            print(f"Input file found for year {year}: input_file")
+            print(f"Input file found for year {year}")
             return input_file
     
     print(f"No input file found for year {year}.")
@@ -56,9 +56,9 @@ def main(start_year, end_year, subdataset, clr_file):
 
         try:
             # Execute the translate command
-            print(f"Translating input_file to intermediate_file with CRS {crs}.")
+            print(f"Converting .nc file to .tiff file.")
             subprocess.run(cmd_translate, check=True)
-            print(f"Translation successful: intermediate_file.")
+            print(f"Successfully converted.")
         except subprocess.CalledProcessError as e:
             print(f"Error during gdal_translate for year {year}: {e}")
             continue
@@ -73,7 +73,7 @@ def main(start_year, end_year, subdataset, clr_file):
 
         # Remove intermediate file
         os.remove(intermediate_file)
-        print(f"Intermediate file removed successfully.")
+        print(f".tiff file removed successfully.")
         print(f"Successfully converted and colored for the year {year} with CRS {crs}, subdataset {subdataset}\n")
 
 if __name__ == "__main__":
