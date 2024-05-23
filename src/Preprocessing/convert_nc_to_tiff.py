@@ -20,7 +20,7 @@ def main(start_year, end_year, subdataset):
     # Directory containing the NetCDF files
     input_dir = r"C:\Users\nschl\Documents\AIMS_MSc_Project_CERI\Dataset\LULC_2000_2018\nc"
     # Directory to save the output GeoTIFF files
-    output_dir = r"C:\Users\nschl\Documents\AIMS_MSc_Project_CERI\Dataset\LULC_2000_2018\tiff"
+    output_dir = rf"C:\Users\nschl\Documents\AIMS_MSc_Project_CERI\Dataset\LULC_2000_2018\tiff_{subdataset}"
 
     # Ensure the output directory exists
     os.makedirs(output_dir, exist_ok=True)
