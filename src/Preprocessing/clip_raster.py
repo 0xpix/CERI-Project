@@ -24,16 +24,12 @@ def find_shapefiles(directory, pattern="gadm41_*_1.shp"):
     return shapefiles
 
 def find_input_file(input_dir, year):
-    patterns = [
-        f"ESACCI-LC-L4-LCCS-Map-300m-P1Y-{year}-v2.0.7cds.nc",
-        f"C3S-LC-L4-LCCS-Map-300m-P1Y-{year}-v2.1.1.nc"
-    ]
-    
-    for pattern in patterns:
-        input_file = os.path.join(input_dir, pattern)
-        if os.path.exists(input_file):
-            return input_file
-    
+    pattern = f"LULC_{year}_lccs_class.tiff"
+    input_file = os.path.join(input_dir, pattern)
+    print(f"Checking for file: {input_file}")  # Added for debugging
+    if os.path.exists(input_file):
+        print(f"Found raster file for year {year}: {input_file}")  # Added for debugging
+        return input_file
     return None
 
 def main(input_directory, shapefile_directory, output_directory, start_year, end_year):
@@ -54,12 +50,16 @@ def main(input_directory, shapefile_directory, output_directory, start_year, end
             print(f"No raster file found for year {year}.")
             continue
         
+        # Create subfolder for the year
+        year_output_directory = os.path.join(output_directory, str(year))
+        os.makedirs(year_output_directory, exist_ok=True)
+        
         raster_name = os.path.splitext(os.path.basename(raster_path))[0]
         
         for shapefile in shapefiles:
             # Generate output filename
             shapefile_name = os.path.basename(shapefile).replace('.shp', '')
-            output_path = os.path.join(output_directory, f'{raster_name}_{shapefile_name}_clipped.tif')
+            output_path = os.path.join(year_output_directory, f'{raster_name}_{shapefile_name}_clipped.tif')
             
             print(f'Clipping raster {raster_path} with {shapefile}')
             
