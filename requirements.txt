@@ -1,0 +1,4 @@
+geopandas
+shapely
+gdal
+argparse
