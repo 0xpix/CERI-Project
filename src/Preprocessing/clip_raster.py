@@ -23,9 +23,22 @@ def find_shapefiles(directory, pattern="gadm41_*_1.shp"):
                 shapefiles.append(os.path.join(root, file))
     return shapefiles
 
-def main(raster_path, input_directory, output_directory):
+def find_input_file(input_dir, year):
+    patterns = [
+        f"ESACCI-LC-L4-LCCS-Map-300m-P1Y-{year}-v2.0.7cds.nc",
+        f"C3S-LC-L4-LCCS-Map-300m-P1Y-{year}-v2.1.1.nc"
+    ]
+    
+    for pattern in patterns:
+        input_file = os.path.join(input_dir, pattern)
+        if os.path.exists(input_file):
+            return input_file
+    
+    return None
+
+def main(input_directory, shapefile_directory, output_directory, start_year, end_year):
     # Find all shapefiles
-    shapefiles = find_shapefiles(input_directory)
+    shapefiles = find_shapefiles(shapefile_directory)
     
     if not shapefiles:
         print("No shapefiles found matching the pattern.")
@@ -34,26 +47,35 @@ def main(raster_path, input_directory, output_directory):
     # Ensure the output directory exists
     os.makedirs(output_directory, exist_ok=True)
     
-    raster_name = os.path.splitext(os.path.basename(raster_path))[0]
-    
-    for shapefile in shapefiles:
-        # Generate output filename
-        shapefile_name = os.path.basename(shapefile).replace('.shp', '')
-        output_path = os.path.join(output_directory, f'{raster_name}_{shapefile_name}_clipped.tif')
+    for year in range(start_year, end_year + 1):
+        raster_path = find_input_file(input_directory, year)
         
-        print(f'Clipping raster with {shapefile}')
+        if not raster_path:
+            print(f"No raster file found for year {year}.")
+            continue
         
-        # Clip the raster
-        clip_raster_with_shapefile(raster_path, shapefile, output_path)
+        raster_name = os.path.splitext(os.path.basename(raster_path))[0]
         
-        print(f'Saved clipped raster to {output_path}')
+        for shapefile in shapefiles:
+            # Generate output filename
+            shapefile_name = os.path.basename(shapefile).replace('.shp', '')
+            output_path = os.path.join(output_directory, f'{raster_name}_{shapefile_name}_clipped.tif')
+            
+            print(f'Clipping raster {raster_path} with {shapefile}')
+            
+            # Clip the raster
+            clip_raster_with_shapefile(raster_path, shapefile, output_path)
+            
+            print(f'Saved clipped raster to {output_path}')
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Clip raster by shapefiles')
-    parser.add_argument('--rpath', type=str, required=True, help='Path to the input raster file')
-    parser.add_argument('--input', type=str, required=True, help='Directory containing shapefiles')
+    parser = argparse.ArgumentParser(description='Clip rasters by shapefiles')
+    parser.add_argument('--input', type=str, required=True, help='Directory containing raster files')
+    parser.add_argument('--shapefiles', type=str, required=True, help='Directory containing shapefiles')
     parser.add_argument('--output', type=str, required=True, help='Directory to save clipped rasters')
+    parser.add_argument('--start_year', type=int, required=True, help='Start year for the rasters')
+    parser.add_argument('--end_year', type=int, required=True, help='End year for the rasters')
 
     args = parser.parse_args()
     
-    main(args.rpath, args.input, args.output)
+    main(args.input, args.shapefiles, args.output, args.start_year, args.end_year)
