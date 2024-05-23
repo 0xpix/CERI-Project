@@ -2,6 +2,20 @@ import os
 import subprocess
 import argparse
 
+def find_input_file(input_dir, year):
+    # List of possible file name patterns
+    patterns = [
+        f"ESACCI-LC-L4-LCCS-Map-300m-P1Y-{year}-v2.0.7cds.nc",
+        f"C3S-LC-L4-LCCS-Map-300m-P1Y-{year}-v2.1.1"
+    ]
+    
+    for pattern in patterns:
+        input_file = os.path.join(input_dir, pattern)
+        if os.path.exists(input_file):
+            return input_file
+    
+    return None
+
 def main(start_year, end_year):
     # Directory containing the NetCDF files
     input_dir = r"C:\Users\nschl\Documents\AIMS_MSc_Project_CERI\Dataset\LULC_2000_2018\nc"
@@ -11,12 +25,16 @@ def main(start_year, end_year):
     # Ensure the output directory exists
     os.makedirs(output_dir, exist_ok=True)
 
-    # Define the CRS you want to assign. Replace 'EPSG:XXXX' with the correct EPSG code.
-    crs = "EPSG:4326"  # Example for WGS 84
+    # Define the CRS for the output GeoTIFF files
+    crs = "EPSG:4326" 
 
     # Iterate over each year and process the corresponding NetCDF file
     for year in range(start_year, end_year + 1):
-        input_file = os.path.join(input_dir, f"ESACCI-LC-L4-LCCS-Map-300m-P1Y-{year}-v2.0.7cds.nc")
+        input_file = find_input_file(input_dir, year)
+        if input_file is None:
+            print(f"Warning: No file found for year {year}")
+            continue
+        
         output_file = os.path.join(output_dir, f"LULC_{year}.tiff")
 
         # GDAL translate command with CRS definition
@@ -31,7 +49,7 @@ def main(start_year, end_year):
         # Execute the translate command
         subprocess.run(cmd_translate, check=True)
 
-        print(f"Successfully converted {year}.cs to {year}.tiff with CRS {crs}\n")
+        print(f"Successfully converted {input_file} to {output_file} with CRS {crs}\n")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Convert NetCDF to GeoTIFF with specified year range.')

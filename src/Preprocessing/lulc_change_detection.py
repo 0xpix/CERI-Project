@@ -45,8 +45,8 @@ def main(start_year, end_year):
         class_areas = calculate_class_areas(input_file)
         yearly_class_areas[year] = class_areas
 
-    # DataFrame to store percentage changes
-    change_df = pd.DataFrame(columns=['Year', 'Class', 'Percentage Change'])
+    # List to store percentage changes
+    change_records = []
 
     for i in range(1, len(years)):
         current_year = years[i]
@@ -57,9 +57,12 @@ def main(start_year, end_year):
 
         percentage_changes = calculate_percentage_change(current_areas, previous_areas)
         for class_label, change in percentage_changes.items():
-            change_df = change_df.append({'Year': current_year, 'Class': class_label, 'Percentage Change': change}, ignore_index=True)
+            change_records.append({'Year': current_year, 'Class': class_label, 'Percentage Change': change})
 
-    # Specifically look for changes in urban class
+    # Convert the list to a DataFrame
+    change_df = pd.DataFrame(change_records)
+
+    # Specifically look for changes in urban class (assuming urban class label is known, e.g., 1)
     urban_changes = change_df[change_df['Class'] == 190]
     print("Urban class changes year-on-year:")
     print(urban_changes)
