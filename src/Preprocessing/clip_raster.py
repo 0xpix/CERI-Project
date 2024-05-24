@@ -9,16 +9,25 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), r"C:\Users\nschl\Documents\AIMS_MSc_Project_CERI\GitHub\CERI-Project\src\data"))
 from country_code import country_code_dict  # Import the country code dictionary
 
-def clip_raster_with_shapefile(raster_path, shapefile_path, output_path):
-    # Use GDAL warp to clip the raster
-    subprocess.run([
+def clip_raster_with_shapefile(raster_path, shapefile_path, output_path, time_period, country):
+    # Use GDAL warp to clip the raster and capture the output
+    process = subprocess.run([
         'gdalwarp',
         '-cutline', shapefile_path,
         '-crop_to_cutline',
         '-dstalpha',
         raster_path,
         output_path
-    ], check=True)
+    ], capture_output=True, text=True, check=True)
+    
+    # Modify and print the GDAL output
+    for line in process.stdout.splitlines():
+        if "Creating output file" in line:
+            print(f"{time_period.capitalize()} - {country}: {line}")
+        elif "Processing" in line and "[1/1]" in line:
+            print(f"{time_period.capitalize()} - {country}: done\n")
+        else:
+            print(line)
 
 def find_shapefiles(directory, pattern="gadm41_*_1.shp"):
     shapefiles = []
@@ -54,7 +63,9 @@ def main(input_directory, shapefile_directory, output_directory, disaster_dict_f
     os.makedirs(output_directory, exist_ok=True)
 
     for year in disaster_dict:
-        print(f"\nProcessing year: {year}")
+        print(f"\n\n====================================")
+        print(f"Processing year: {year}")
+        print(f"====================================")
         for country in disaster_dict[year]:
             # Get the country code from the reversed dictionary
             country_code = name_to_code_dict.get(country)
@@ -68,9 +79,9 @@ def main(input_directory, shapefile_directory, output_directory, disaster_dict_f
             if not country_shapefiles:
                 print(f"No shapefiles found for country: {country} with code: {country_code}")
                 continue
-            
-            print(f"\nProcessing year: {year}, country: {country} ({country_code})")
-            
+            print("\n==================================================")
+            print(f"Processing year: {year}, country: {country} ({country_code})")
+            print("==================================================")
             for offset, time_period in zip([-1, 0, 1], ['the year before disaster', 'the year of disaster', 'the year after disaster']):
                 target_year = int(year) + offset
                 raster_path = find_input_file(input_directory, target_year)
@@ -86,11 +97,12 @@ def main(input_directory, shapefile_directory, output_directory, disaster_dict_f
                 for shapefile in country_shapefiles:
                     output_path = os.path.join(year_output_directory, f'{country}_{raster_name}_{time_period.replace(" ", "_")}.tif')
                     
-                    print(f"  Clipping raster with {country} for {time_period}...")
+                    print("==================================================")
+                    print(f"Clipping raster for {country} for {time_period} ...")
                     
-                    clip_raster_with_shapefile(raster_path, shapefile, output_path)
+                    clip_raster_with_shapefile(raster_path, shapefile, output_path, time_period, country)
                     
-                    print(f"  Saved clipped raster for {time_period}")
+                    print(f"  Saved clipped raster for {time_period}\n")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Clip rasters by shapefiles')
