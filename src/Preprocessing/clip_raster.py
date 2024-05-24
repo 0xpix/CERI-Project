@@ -10,24 +10,30 @@ sys.path.append(os.path.join(os.path.dirname(__file__), r"C:\Users\nschl\Documen
 from country_code import country_code_dict  # Import the country code dictionary
 
 def clip_raster_with_shapefile(raster_path, shapefile_path, output_path, time_period, country):
-    # Use GDAL warp to clip the raster and capture the output
-    process = subprocess.run([
-        'gdalwarp',
-        '-cutline', shapefile_path,
-        '-crop_to_cutline',
-        '-dstalpha',
-        raster_path,
-        output_path
-    ], capture_output=True, text=True, check=True)
-    
-    # Modify and print the GDAL output
-    for line in process.stdout.splitlines():
-        if "Creating output file" in line:
-            print(f"{time_period.capitalize()} - {country}: {line}")
-        elif "Processing" in line and "[1/1]" in line:
-            print(f"{time_period.capitalize()} - {country}: done\n")
-        else:
-            print(line)
+    try:
+        process = subprocess.run([
+            'gdalwarp',
+            '-cutline', shapefile_path,
+            '-crop_to_cutline',
+            '-dstalpha',
+            raster_path,
+            output_path
+        ], capture_output=True, text=True, check=True)
+
+        # Modify and print the GDAL output
+        for line in process.stdout.splitlines():
+            if "Creating output file" in line:
+                print(f"{time_period.capitalize()} - {country}: {line}")
+            elif "Processing" in line and "[1/1]" in line:
+                print(f"{time_period.capitalize()} - {country}: done\n")
+            else:
+                print(line)
+
+    except subprocess.CalledProcessError as e:
+        print(f"Error during clipping raster for {country} for {time_period} ...")
+        print(f"Command: {' '.join(e.cmd)}")
+        print(f"Return code: {e.returncode}")
+        print(f"Error output:\n{e.stderr}")
 
 def find_shapefiles(directory, pattern="gadm41_*_1.shp"):
     shapefiles = []
@@ -96,6 +102,11 @@ def main(input_directory, shapefile_directory, output_directory, disaster_dict_f
                 
                 for shapefile in country_shapefiles:
                     output_path = os.path.join(year_output_directory, f'{country}_{raster_name}_{time_period.replace(" ", "_")}.tif')
+                    
+                    # Check if the output file already exists
+                    if os.path.exists(output_path):
+                        print(f"  Output file already exists for {country} for {time_period}. Skipping...")
+                        continue
                     
                     print("==================================================")
                     print(f"Clipping raster for {country} for {time_period} ...")
