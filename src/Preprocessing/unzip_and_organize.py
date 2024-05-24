@@ -1,8 +1,11 @@
 import os
+import sys
 import zipfile
 import re
 import argparse
-import requests
+
+sys.path.append(os.path.join(os.path.dirname(__file__), r"C:\Users\nschl\Documents\AIMS_MSc_Project_CERI\GitHub\CERI-Project\src\data"))
+from country_code import country_code_dict
 
 def extract_country_code(zip_filename):
     """Extract the country code (letters) from the zip filename."""
@@ -10,15 +13,8 @@ def extract_country_code(zip_filename):
     return match.group(0) if match else None
 
 def get_country_name(country_code):
-    """Get the country name from the country code using the restcountries.com API."""
-    try:
-        response = requests.get(f'https://restcountries.com/v3.1/alpha/{country_code}')
-        response.raise_for_status()
-        data = response.json()
-        return data[0]['name']['common']
-    except requests.RequestException as e:
-        print(f"Error fetching country name for code {country_code}: {e}")
-        return None
+    """Get the country name from the country code using the local dictionary."""
+    return country_code_dict.get(country_code, None)
 
 def unzip_files_in_folder(zip_folder_path, output_folder_path):
     """Unzip all zip files in the specified folder and extract to subfolders based on country name."""
