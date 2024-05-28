@@ -13,6 +13,7 @@ files_to_download = {
     },
     "processed": {
         "17GVeNmIU-TYyuN-MtDeci1V64KHul_KA": "data/external/Landscan_data/processed/Landscan_clipped_Africa.zip",
+        "1_jjy2QOnTL7Bl8wVukgcOZbHS2I-7wNZ": "data/external/Landscan_data/processed/Landscan_clipped_country_level.zip",
         # Add more file IDs and paths as needed
     }
 }
