@@ -8,7 +8,6 @@ from tqdm import tqdm
 files_to_download = {
     "raw": {
         "10HzjjBEpCCj1pd9XrqHBLWMihV8h_EP2": "data/external/Landscan_data/raw/Landscan_raw.zip",
-        
         # Add more file IDs and paths as needed
     },
     "processed": {
@@ -34,6 +33,7 @@ def unzip_with_progress(zip_path, extract_to):
             for file in zip_ref.infolist():
                 zip_ref.extract(file, extract_to)
                 pbar.update(1)
+    os.remove(zip_path)  # Delete the zip file after unzipping
 
 def main(data_type):
     if data_type not in files_to_download:
@@ -46,7 +46,7 @@ def main(data_type):
         extract_to = os.path.dirname(dest_path)
         unzip_with_progress(dest_path, extract_to)
 
-    print("All files have been downloaded and extracted successfully.")
+    print("All files have been downloaded, extracted, and zip files deleted successfully.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Download and extract data.")
