@@ -1,0 +1,19 @@
+1.
+TY  - DATA
+AU  - Bright, Edward
+AU  - Rose, Amy
+AU  - Urban, Marie
+PY  - 2013
+TI  - LandScan Global 2012
+CY  - Oak Ridge, TN
+PB  - Oak Ridge National Laboratory
+SE  - July 01, 2013
+T3  - LandScan Global
+ET  - 2012
+RI  - Global
+C1  - CY 2012
+C3  - raster digital data
+AB  - Using an innovative approach that combines Geographic Information Science, remote sensing technology, and machine learning algorithms, ORNL’s LandScan is the community standard for global population distribution. At 30 arc-second (approximately 1 km) resolution, LandScan is the finest resolution global population distribution data available representing an “ambient population” (average over 24 hours). The LandScan algorithm, an R&D 100 Award Winner, uses spatial data, high-resolution imagery exploitation, and a multi-variable dasymetric modeling approach to disaggregate census counts within an administrative boundary. LandScan population data are spatially explicit - unlike tabular Census data. Since no single population distribution model can account for the differences in spatial data availability, quality, scale, and accuracy as well as the differences in cultural settlement practices, LandScan population distribution models are tailored to match the data conditions and geographical nature of each individual country and region. By modeling an ambient population, LandScan Global captures the full potential activity space of people throughout the course of the day and night rather than just a residential location.
+UR  - landscan.ornl.gov
+DO  - https://doi.org/10.48690/1524215
+ER  - 

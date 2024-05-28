@@ -1,0 +1,37 @@
+10  255 255 100  255  Cropland rainfed
+11  255 255 100  255  Cropland rainfed
+12  255 255 0    255  Cropland rainfed
+20  170 240 240  255  Cropland irrigated or post-flooding
+30  220 240 100  255  Mosaic cropland (>50%) / natural vegetation (<50%)
+40  200 200 100  255  Mosaic natural vegetation (>50%) / cropland (<50%)
+50  0   100 0    255  Tree cover broadleaved evergreen (>15%)
+60  0   160 0    255  Tree cover broadleaved deciduous (>15%)
+61  0   160 0    255  Tree cover broadleaved deciduous (>15%)
+62  170 200 0    255  Tree cover broadleaved deciduous (>15%)
+70  0   60  0    255  Tree cover needleleaved evergreen (>15%)
+71  0   60  0    255  Tree cover needleleaved evergreen (>15%)
+72  0   80  0    255  Tree cover needleleaved evergreen (>15%)
+80  40  80  0    255  Tree cover needleleaved deciduous (>15%)
+81  40  80  0    255  Tree cover needleleaved deciduous (>15%)
+82  40  100 0    255  Tree cover needleleaved deciduous (>15%)
+90  120 130 0    255  Tree cover mixed leaf type (broadleaved and needleleaved)
+100 140 160 0    255  Mosaic tree and shrub (>50%) / herbaceous cover (<50%)
+110 190 150 0    255  Mosaic herbaceous cover (>50%) / tree and shrub (<50%)
+120 150 100 0    255  Shrubland
+121 150 100 0    255  Shrubland
+122 150 100 0    255  Shrubland
+130 255 180 50   255  Grassland
+140 255 220 210  255  Lichens and mosses
+150 255 235 175  255  Sparse vegetation (<15%)
+151 255 200 100  255  Sparse vegetation (<15%)
+152 255 210 120  255  Sparse vegetation (<15%)
+153 255 235 175  255  Sparse vegetation (<15%)
+160 0   120 90   255  Tree cover flooded fresh/brackish water
+170 0   150 120  255  Tree cover flooded saline water
+180 0   220 130  255  Shrub or herbaceous cover flooded
+190 195 20  0    255  Urban areas
+200 255 245 215  255  Bare areas
+201 220 220 220  255  Bare areas
+202 255 245 215  255  Bare areas
+210 0   70  200  255  Water bodies
+220 255 255 255  255  Permanent snow and ice
