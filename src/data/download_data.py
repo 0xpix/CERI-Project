@@ -7,7 +7,7 @@ from tqdm import tqdm
 # Define the files to download for raw and processed data
 files_to_download = {
     "raw": {
-        "10HzjjBEpCCj1pd9XrqHBLWMihV8h_EP2": "data/external/Landscan_data/raw/Landscan_clipped_Africa.zip",
+        "10HzjjBEpCCj1pd9XrqHBLWMihV8h_EP2": "data/external/Landscan_data/raw/Landscan_raw.zip",
         
         # Add more file IDs and paths as needed
     },
