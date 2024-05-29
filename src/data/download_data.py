@@ -19,8 +19,8 @@ files_to_download = {
 
 # Create the data directory if it doesn't exist
 os.makedirs("data/external/Landscan_data/raw", exist_ok=True)
-os.makedirs("data/external/Landscan_data/africa/processed", exist_ok=True)
-os.makedirs("data/external/Landscan_data/country_level/processed", exist_ok=True)
+os.makedirs("data/external/Landscan_data/processed/africa/", exist_ok=True)
+os.makedirs("data/external/Landscan_data/processed/country_level/", exist_ok=True)
 
 def download_files(file_ids_paths):
     # Download each file
