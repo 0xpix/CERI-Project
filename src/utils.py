@@ -12,9 +12,6 @@ ee.Initialize()
 # =====================
 def feature2ee(file):
     """
-    -----------------------------------------------------------------------------------------------
-    Inspired by the function from https://bikeshbade.com.np/tutorials/Detail/?title=Geo-pandas+data+frame+to+GEE+feature+collection+using+Python&code=13
-    -----------------------------------------------------------------------------------------------
     Convert geographic data files into Google Earth Engine (GEE) feature collections.
     Handles shapefiles and CSV files and converts them into corresponding EE geometries.
     """
@@ -45,9 +42,30 @@ def feature2ee(file):
 
         elif file.endswith('.csv'):
             df = pd.read_csv(file)
+
+            # Drop rows with NaN values in critical columns
+            df = df.dropna(subset=['Longitude', 'Latitude', 'Disaster type'])
+
+            def clean_value(value):
+                return value if pd.notna(value) else 'Unknown'
+
+            def parse_date(date_str):
+                try:
+                    return pd.to_datetime(date_str, format='%m/%d/%Y').strftime('%Y-%m-%d')
+                except Exception as e:
+                    return '1970-01-01'
+
             features = [
-                ee.Feature(ee.Geometry.Point([row['Longitude'], row['Latitude']]), 
-                           {'disaster_type': row['Disaster type'], 'date': row['Date'], 'country': row['Country'], 'deaths': row['Total deaths'], 'location': row['Location']})
+                ee.Feature(
+                    ee.Geometry.Point([row['Longitude'], row['Latitude']]),
+                    {
+                        'disaster_type': clean_value(row['Disaster type']),
+                        'date': parse_date(row['Date']),
+                        'country': clean_value(row['Country']),
+                        'deaths': clean_value(row['Total deaths']),
+                        'location': clean_value(row['Location'])
+                    }
+                )
                 for idx, row in df.iterrows()
             ]
 
@@ -61,3 +79,4 @@ def feature2ee(file):
 
     except Exception as e:
         print(f"An error occurred: {str(e)}")
+        return None
