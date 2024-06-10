@@ -54,7 +54,7 @@ def feature2ee(file):
                     ee.Geometry.Point([row['Longitude'], row['Latitude']]),
                     {
                         'disaster_type': clean_value(row['Disaster type']),
-                        'date': row['Date'],
+                        'date': clean_value(row['Date']),
                         'country': clean_value(row['Country']),
                         'deaths': clean_value(row['Total deaths']),
                         'location': clean_value(row['Location'])
