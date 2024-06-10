@@ -49,18 +49,12 @@ def feature2ee(file):
             def clean_value(value):
                 return value if pd.notna(value) else 'Unknown'
 
-            def parse_date(date_str):
-                try:
-                    return pd.to_datetime(date_str, format='%m/%d/%Y').strftime('%Y-%m-%d')
-                except Exception as e:
-                    return '1970-01-01'
-
             features = [
                 ee.Feature(
                     ee.Geometry.Point([row['Longitude'], row['Latitude']]),
                     {
                         'disaster_type': clean_value(row['Disaster type']),
-                        'date': parse_date(row['Date']),
+                        'date': row['Date'],
                         'country': clean_value(row['Country']),
                         'deaths': clean_value(row['Total deaths']),
                         'location': clean_value(row['Location'])
