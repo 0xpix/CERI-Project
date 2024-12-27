@@ -1,4 +1,4 @@
-# @title Change detection functions
+# Change detection functions
 def create_disaster_map(country_name, disaster_year, type, df):
     # Create the map
     Map_africa = geemap.Map(**map_config)
