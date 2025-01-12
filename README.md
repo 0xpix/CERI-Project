@@ -1,4 +1,4 @@
-# Quantify large population fellowing climate disasters using satellites remote sensing imagery
+# Quantify large population following climate disasters using satellites remote sensing imagery
 ## ABSTRACT
 Climate disasters such as floods, storms, droughts, and heatwaves are increasingly leading to signif-
 icant population displacements, with social, economic, and environmental impacts. This study aims
